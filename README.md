@@ -1,7 +1,7 @@
 # Best In Place
-[![Build Status](https://secure.travis-ci.org/bernat/best_in_place.png)](http://travis-ci.org/bernat/best_in_place)
 **The Unobtrusive in Place editing solution**
 
+Projo maintains this fork of the original [Best In Place](https://github.com/projo-berlin/best_in_place) gem.
 
 ## Description
 
@@ -20,7 +20,7 @@ The editor works by PUTting the updated value to the server and GETting the upda
 Installing *best_in_place* is very easy and straight-forward.
 Just begin including the gem in your Gemfile:
 
-    gem 'best_in_place', '~> 3.0.1'
+    gem "best_in_place", git: "https://github.com/projo-berlin/best_in_place.git"
 
 After that, specify the use of the jquery and best in place
 javascripts in your application.js, and optionally specify jquery-ui if
@@ -66,7 +66,7 @@ You are done!
 - Custom display methods using a method from your model or an existing rails
   view helper
 
-## Usage of Rails 3 Gem
+## Usage
 
 ### best_in_place
 **best_in_place object, field, OPTIONS**

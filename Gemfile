@@ -20,7 +20,4 @@ gem 'launchy'
 gem 'puma'
 gem 'sqlite3'
 gem 'selenium-webdriver'
-
-platforms :mri_21 do
-  gem 'byebug'
-end
+gem 'byebug'

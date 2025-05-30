@@ -4,6 +4,7 @@ source 'https://rails-assets.org'
 # Specify your gem's dependencies in best_in_place.gemspec
 gemspec
 
+gem 'mutex_m'
 gem 'activerecord'
 gem 'rails-assets-jquery', '1.11.1'
 gem 'rails-assets-jquery-ui', '1.10.4'

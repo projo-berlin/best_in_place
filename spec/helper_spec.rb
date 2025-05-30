@@ -336,7 +336,7 @@ describe BestInPlace::Helper, type: :helper do
       end
 
       it "should render the date as text" do
-        expect(@span.text).to eq(@user.birth_date.to_date.to_s)
+        expect(@span.text).to eq(@user.birth_date.to_s)
       end
 
       it "should have a date data-bip-type" do

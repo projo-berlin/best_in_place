@@ -26,6 +26,4 @@ DESC
 
   s.add_runtime_dependency 'actionpack', '>= 3.2'
   s.add_runtime_dependency 'railties', '>= 3.2'
-
-  s.add_development_dependency 'combustion', '~> 1.3'
 end

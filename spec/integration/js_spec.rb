@@ -482,7 +482,7 @@ describe "JS behaviour", :js => true do
     find("##{id} textarea").set '1Q84'
     sleep 1
     execute_script("$('##{id} textarea').blur()")
-    wait_for_ajax
+    sleep 1
 
     visit user_path(@user)
 
@@ -724,6 +724,8 @@ describe "JS behaviour", :js => true do
       id = BestInPlace::Utils.build_best_in_place_id @user, :name
       find("#edit_#{@user.id}").click
       find("##{id} input[name='name']").set('Maria Lucia')
+      execute_script("$('##{id} input[name=\"name\"]').blur();")
+
       within("tr#user_#{@user.id} > .name > span") do
         expect(page).to have_content('Maria Lucia')
         expect(page).to have_xpath("//a[contains(@href,'#{user_path(@user)}')]")

@@ -1,15 +1,8 @@
 ENV['RAILS_ENV'] ||= 'test'
 
+require 'bundler'
 require 'combustion'
 require 'capybara/rspec'
-
-require 'capybara/poltergeist'
-require_relative 'support/screenshot'
-Capybara.register_driver :poltergeist do |app|
-  Capybara::Poltergeist::Driver.new(app, {js_errors: false, inspector: true})
-end
-Capybara.javascript_driver = :poltergeist
-Capybara.server = :webrick
 
 require 'best_in_place'
 
@@ -25,7 +18,6 @@ require 'capybara/rails'
 
 require 'best_in_place/test_helpers'
 require_relative 'support/retry_on_timeout'
-
 
 RSpec.configure do |config|
   config.include BestInPlace::TestHelpers

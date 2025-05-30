@@ -14,10 +14,11 @@ gem 'nokogiri'
 gem 'combustion'
 gem 'sprockets-rails'
 gem 'capybara'
-gem 'poltergeist'
 gem 'appraisal'
 gem 'launchy'
-gem 'webrick'
+gem 'puma'
+gem 'sqlite3'
+gem 'selenium-webdriver'
 
 platforms :mri_21 do
   gem 'byebug'

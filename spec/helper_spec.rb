@@ -32,7 +32,7 @@ describe BestInPlace::Helper, type: :helper do
     end
 
     it "should show deprecation warning" do
-      expect(ActiveSupport::Deprecation).to receive(:warn).with("[Best_in_place] :path is deprecated in favor of :url ")
+      expect(ActiveSupport::Deprecation).to receive(:new).with("[Best_in_place] :path is deprecated in favor of :url ")
 
       helper.best_in_place @user, :name, path: "http://example.com"
     end
@@ -336,7 +336,7 @@ describe BestInPlace::Helper, type: :helper do
       end
 
       it "should render the date as text" do
-        expect(@span.text).to eq(@user.birth_date.to_date.to_s)
+        expect(@span.text).to eq(@user.birth_date.to_s)
       end
 
       it "should have a date data-bip-type" do

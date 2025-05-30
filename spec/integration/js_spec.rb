@@ -406,7 +406,7 @@ describe "JS behaviour", :js => true do
     expect(find('#favorite_color')).to have_content('Red')
 
     id = BestInPlace::Utils.build_best_in_place_id @user, :favorite_color
-    find(("##{id}")).trigger('click')
+    find(("##{id}")).click
     expect(page).to have_no_css("##{id} input[type='submit']")
     find("##{id} input[name='favorite_color']").set 'Blue'
     sleep 1
@@ -427,7 +427,7 @@ describe "JS behaviour", :js => true do
     expect(find('#favorite_books')).to have_content('The City of Gold and Lead')
 
     id = BestInPlace::Utils.build_best_in_place_id @user, :favorite_books
-    find("##{id}").trigger('click')
+    find("##{id}").click
     find("##{id} textarea").set('1Q84')
     find("##{id} input[type='submit']").click
     wait_for_ajax
@@ -477,12 +477,12 @@ describe "JS behaviour", :js => true do
     expect(find('#favorite_books')).to have_content('The City of Gold and Lead')
 
     id = BestInPlace::Utils.build_best_in_place_id @user, :favorite_books
-    find("##{id}").trigger 'click'
+    find("##{id}").click
     expect(page).to have_no_css("##{id} input[type='submit']")
     find("##{id} textarea").set '1Q84'
     sleep 1
     execute_script("$('##{id} textarea').blur()")
-    wait_for_ajax
+    sleep 1
 
     visit user_path(@user)
 
@@ -724,6 +724,8 @@ describe "JS behaviour", :js => true do
       id = BestInPlace::Utils.build_best_in_place_id @user, :name
       find("#edit_#{@user.id}").click
       find("##{id} input[name='name']").set('Maria Lucia')
+      execute_script("$('##{id} input[name=\"name\"]').blur();")
+
       within("tr#user_#{@user.id} > .name > span") do
         expect(page).to have_content('Maria Lucia')
         expect(page).to have_xpath("//a[contains(@href,'#{user_path(@user)}')]")

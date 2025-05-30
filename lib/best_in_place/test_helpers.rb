@@ -36,11 +36,7 @@ module BestInPlace
     end
 
     def click_bip_input(id)
-      if Capybara.current_driver == :poltergeist
-        find("##{id}").trigger('click')
-      else
-        find("##{id}").click
-      end
+      find("##{id}").click
     end
 
     def wait_for_ajax

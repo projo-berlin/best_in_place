@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 source 'https://rails-assets.org'
 
+ruby file: ".tool-versions"
+
 # Specify your gem's dependencies in best_in_place.gemspec
 gemspec
 

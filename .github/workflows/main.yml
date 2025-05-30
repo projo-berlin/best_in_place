@@ -1,4 +1,4 @@
-name: "Tests"
+name: "CI"
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  test-system:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

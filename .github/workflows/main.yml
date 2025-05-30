@@ -1,0 +1,28 @@
+name: "Tests"
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test-system:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Install ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() }}
+        with:
+          name: capybara-screenshots
+          path: tmp/screenshots/

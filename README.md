@@ -434,10 +434,7 @@ Fork the project on [github](https://github.com/bernat/best_in_place 'bernat / b
 
 ### Run the specs
 
-    $ appraisal
-    $ appraisal rspec
-
-You many need to install appraisal: `gem install appraisal`
+    $ bundle exec rake
 
 ---
 

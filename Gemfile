@@ -1,5 +1,4 @@
 source 'https://rubygems.org'
-source 'https://rails-assets.org'
 
 ruby file: ".tool-versions"
 
@@ -10,12 +9,12 @@ gem 'activerecord'
 gem 'byebug'
 gem 'capybara'
 gem 'combustion'
+gem 'jquery-rails'
+gem 'jquery-ui-rails'
 gem 'launchy'
 gem 'mutex_m'
 gem 'nokogiri'
 gem 'puma'
-gem 'rails-assets-jquery', '1.11.1'
-gem 'rails-assets-jquery-ui', '1.10.4'
 gem 'rdiscount'
 gem 'rspec-rails'
 gem 'selenium-webdriver'

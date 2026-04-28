@@ -393,19 +393,6 @@ BestInPlace.configure do |config|
 end
 ```
 
-## Notification
-
-Sometimes your in-place updates will fail due to validation or for some other reason. In such case, you'll want to notify the user somehow. **Best in Place** supports doing so through the best_in_place:error event, and has built-in support for notification via jquery.purr, right out of the box.
-
-To opt into the jquery.purr error notification, just add best_in_place.purr to your javascripts, as described below.
-
-```javascript
-//= require jquery.purr
-//= require best_in_place.purr
-```
-
-If you'd like to develop your own custom form of error notification, you can use best_in_place.purr as an example to guide you.
-
 ## Security
 
 If the script is used with the Rails Gem no html tags will be allowed unless the sanitize option is set to true, in that case only the tags [*b i u s a strong em p h1 h2 h3 h4 h5 ul li ol hr pre span img*] will be allowed. If the script is used without the gem and with frameworks other than Rails, then you should make sure you are providing the csrf authenticity params as meta tags and you should always escape undesired html tags such as script, object and so forth.

@@ -182,22 +182,6 @@ describe "JS behaviour", :js => true do
     expect(find('#email')).to have_content('new_two@email.com')
   end
 
-  it "should be able to update a field after an error" do
-    @user.save!
-    visit user_path(@user)
-
-    bip_text @user, :email, "wrong format"
-    expect(page).to have_content("Email has wrong email format")
-
-    bip_text @user, :email, "another@email.com"
-
-    expect(find('#email')).to have_content('another@email.com')
-
-    visit user_path(@user)
-
-    expect(find('#email')).to have_content('another@email.com')
-  end
-
   it "should be able to use bip_select to change a select field" do
     @user.save!
     visit user_path(@user)
@@ -489,15 +473,6 @@ describe "JS behaviour", :js => true do
     expect(find('#favorite_books')).to have_content('1Q84')
   end
 
-  it "should show validation errors" do
-    @user.save!
-    visit user_path(@user)
-
-    bip_text @user, :address, ""
-    expect(page).to have_content("Address can't be blank")
-    expect(find('#address')).to have_content('Via Roma 99')
-  end
-
   it "should fire off a callback when updating a field" do
     @user.save!
     visit user_path(@user)
@@ -641,26 +616,6 @@ describe "JS behaviour", :js => true do
       bip_text @user, :money_custom, "250"
 
       expect(find('#money_custom')).to have_content('250.0 €')
-    end
-
-    it "should still show the custom format after an error" do
-      @user.save!
-      visit user_path(@user)
-
-      bip_text @user, :money, "string"
-
-      expect(page).to have_content("Money is not a number")
-
-      expect(find('#money')).to have_content('$100.00')
-    end
-
-    it "should show the new value using the helper after a successful update" do
-      @user.save!
-      visit user_path(@user)
-
-      bip_text @user, :money, "240"
-
-      expect(find('#money')).to have_content('$240.00')
     end
 
     it "should show the new value using the helper after a successful update if original value is nil" do

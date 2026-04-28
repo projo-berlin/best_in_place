@@ -1,9 +1,7 @@
 //= require jquery
 //= require jquery-ui
-//= require jquery.purr
 //= require best_in_place
 //= require best_in_place.jquery-ui
-//= require best_in_place.purr
 //= require_self
 
 $(document).ready(function() {

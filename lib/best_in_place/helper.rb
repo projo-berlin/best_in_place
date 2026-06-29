@@ -17,6 +17,8 @@ module BestInPlace
 
       value = real_object.send(field)
 
+      edit_value = best_in_place_build_edit_value_for(real_object, field, opts)
+
       if opts[:collection] or type == :checkbox
         collection = opts[:collection]
         value = value.to_s
@@ -44,7 +46,7 @@ module BestInPlace
       options[:data]['bip-ok-button-class'] = opts[:ok_button_class].presence
       options[:data]['bip-cancel-button'] = opts[:cancel_button].presence
       options[:data]['bip-cancel-button-class'] = opts[:cancel_button_class].presence
-      options[:data]['bip-original-content'] = html_escape(opts[:value] || value).presence
+      options[:data]['bip-original-content'] = html_escape(opts[:value] || edit_value || value).presence
 
       options[:data]['bip-skip-blur'] = opts.has_key?(:skip_blur) ? opts[:skip_blur].presence : BestInPlace.skip_blur
 
@@ -86,7 +88,7 @@ module BestInPlace
     def pass_through_html_options(opts, options)
       known_keys = [:id, :type, :nil, :classes, :collection, :data,
                     :activator, :cancel_button, :cancel_button_class, :html_attrs, :inner_class, :nil,
-                    :object_name, :ok_button, :ok_button_class, :display_as, :display_with, :path, :value,
+                    :object_name, :ok_button, :ok_button_class, :display_as, :display_with, :edit_with, :path, :value,
                     :use_confirm, :confirm, :sanitize, :raw, :helper_options, :url, :place_holder, :class,
                     :as, :param, :container]
       uknown_keys = opts.keys - known_keys
@@ -122,6 +124,18 @@ module BestInPlace
       end
     end
 
+    def best_in_place_build_edit_value_for(object, field, opts)
+      return unless opts[:edit_with]
+
+      field_value = object.send(field)
+
+      if opts[:edit_with].is_a?(Proc)
+        opts[:edit_with].call(field_value)
+      else
+        BestInPlace::ViewHelpers.send(opts[:edit_with], field_value)
+      end
+    end
+
     def best_in_place_real_object_for(object)
       (object.is_a?(Array) && object.last.class.respond_to?(:model_name)) ? object.last : object
     end
@@ -135,6 +149,10 @@ module BestInPlace
 
       if args[:display_with] && !args[:display_with].is_a?(Proc) && !ViewHelpers.respond_to?(args[:display_with])
         fail ArgumentError, "Can't find helper #{args[:display_with]}"
+      end
+
+      if args[:edit_with] && !args[:edit_with].is_a?(Proc) && !ViewHelpers.respond_to?(args[:edit_with])
+        fail ArgumentError, "Can't find helper #{args[:edit_with]}"
       end
     end
 

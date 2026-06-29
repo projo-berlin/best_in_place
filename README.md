@@ -94,6 +94,7 @@ Options:
 - **:display_as**: A **model** method which will be called in order to display this field. Cannot be used when using `display_with`.
 - **:display_with**: A **helper** method or proc will be called in order to display this field. Cannot be used with `display_as`.
 - **:helper_options**: A hash of parameters to be sent to the helper method specified by `display_with`.
+- **:edit_with**: A **helper** method or proc which will be called to format the value used to seed the inline input when editing. Symmetric to `display_with` (which controls the displayed text), but applies to the editable value. Defaults to the field's raw value.
 - **:data**: Hash of custom data attributes to be added to span. Can be used to provide data to the ajax:success callback.
 - **:class**: Additional classes to apply to the best_in_place span.  Accepts either a string or Array of strings
 - **:value**: Customize the starting value of the inline input (defaults to to the field's value)
@@ -266,6 +267,50 @@ You can also pass in a proc or lambda like this:
 ```
 = best_in_place @post, :body, :display_with => lambda { |v| textilize(v).html_safe }
 ```
+
+### Localized numbers
+
+`display_with` controls the *displayed* text, while `edit_with` controls the
+value that seeds the *input* when editing. Combined with a locale-aware setter
+on your model, this lets you display and edit a number in the user's locale
+(e.g. `1.234,56` under `:de`) while still storing a plain float in the database.
+
+In the view, display the grouped/localized number but seed the edit box with a
+plain localized form (no thousands delimiter, so the server can parse it
+unambiguously):
+
+```erb
+<%= best_in_place @product, :price,
+      display_with: ->(v) { v.blank? ? "" : ActiveSupport::NumberHelper.number_to_delimited(v) },
+      edit_with:    ->(v) { v.blank? ? "" : ActiveSupport::NumberHelper.number_to_delimited(v, delimiter: "") } %>
+```
+
+best_in_place only sends the typed string to the server (`product[price]=1234,56`),
+so normalize it back to a float where Rails owns type coercion — a model setter
+is the most robust place:
+
+```ruby
+# app/models/product.rb
+def price=(val)
+  super(parse_localized_decimal(val))
+end
+
+private
+
+def parse_localized_decimal(val)
+  return val unless val.is_a?(String)
+  normalized = val.strip
+                  .delete(I18n.t("number.format.delimiter", default: ".")) # strip thousands
+                  .tr(I18n.t("number.format.separator", default: "."), ".") # decimal , -> .
+  normalized.empty? ? nil : Float(normalized)
+rescue ArgumentError
+  val # keep the raw input so validations can reject it
+end
+```
+
+The `delocalize` gem does the same conversion application-wide if you prefer.
+Because `display_with` is also re-applied to the saved value by the controller's
+`respond_with_bip`, the localized display is restored automatically after each save.
 
 ## Ajax success callback
 

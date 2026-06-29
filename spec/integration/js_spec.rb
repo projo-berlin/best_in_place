@@ -658,6 +658,26 @@ describe "JS behaviour", :js => true do
       end
     end
 
+    it "displays and edits a localized number while storing a plain float" do
+      @user.money = 1234.56
+      @user.save!
+
+      retry_on_timeout do
+        visit user_path(@user)
+
+        expect(find('#localized_money')).to have_content('1.234,56')
+
+        id = BestInPlace::Utils.build_best_in_place_id @user, :localized_money
+        find("##{id}").click
+        expect(find("##{id} input").value).to eq("1234,56")
+      end
+
+      bip_text @user, :localized_money, "2345,67"
+
+      expect(find('#localized_money')).to have_content('2.345,67')
+      expect(@user.reload.money).to eq(2345.67)
+    end
+
     it "should show the money in euros" do
       @user.save!
       visit double_init_user_path(@user)

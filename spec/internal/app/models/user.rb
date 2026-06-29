@@ -17,11 +17,22 @@ class User < ActiveRecord::Base
 
   alias_attribute :money_custom, :money
   alias_attribute :money_value, :money
+  alias_attribute :localized_money, :money
   alias_attribute :receive_email_default, :receive_email
   alias_attribute :receive_email_image, :receive_email
   alias_attribute :description_simple, :description
 
   has_many :test_results
+
+  # Demonstrates locale-aware parsing on save: the inline editor sends a
+  # localized string (e.g. "1234,56") which we normalize back to a float.
+  def localized_money=(val)
+    if val.is_a?(String)
+      normalized = val.strip.delete(".").tr(",", ".") # strip thousands, decimal , -> .
+      val = normalized.empty? ? nil : (Float(normalized) rescue val)
+    end
+    self.money = val
+  end
 
   def address_format
     "<b>addr => [#{address}]</b>".html_safe

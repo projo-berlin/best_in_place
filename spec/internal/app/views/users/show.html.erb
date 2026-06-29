@@ -130,6 +130,14 @@
       </td>
     </tr>
     <tr>
+      <td>Localized money</td>
+      <td id="localized_money">
+        <%= best_in_place @user, :localized_money,
+              :display_with => lambda { |v| v.blank? ? "" : number_with_delimiter(v, :delimiter => ".", :separator => ",") },
+              :edit_with => lambda { |v| v.blank? ? "" : number_with_delimiter(v, :delimiter => "", :separator => ",") } %>
+      </td>
+    </tr>
+    <tr>
       <td>Favorite Movie</td>
       <td id="favorite_movie">
         <%- opts = {:ok_button => 'Do it!', :cancel_button => 'Nope', :use_confirm => false} %>

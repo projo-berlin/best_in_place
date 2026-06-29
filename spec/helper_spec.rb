@@ -268,6 +268,38 @@ describe BestInPlace::Helper, type: :helper do
         end
       end
 
+      describe "edit_with" do
+        it "seeds the edit value (bip-original-content) from a proc while display stays formatted" do
+          out = helper.best_in_place @user, :money,
+            :display_with => :number_to_currency,
+            :edit_with => Proc.new { |v| "#{v} bucks" }
+          nk = Nokogiri::HTML.parse(out)
+          span = nk.css("span")
+          expect(span.text).to eq("$150.00")
+          expect(span.attribute("data-bip-original-content").value).to eq("150.0 bucks")
+        end
+
+        it "seeds the edit value from a view helper" do
+          out = helper.best_in_place @user, :money, :edit_with => :number_to_currency
+          nk = Nokogiri::HTML.parse(out)
+          span = nk.css("span")
+          expect(span.attribute("data-bip-original-content").value).to eq("$150.00")
+        end
+
+        it "lets an explicit :value override :edit_with" do
+          out = helper.best_in_place @user, :money,
+            :edit_with => Proc.new { |v| "#{v} bucks" },
+            :value => "explicit"
+          nk = Nokogiri::HTML.parse(out)
+          span = nk.css("span")
+          expect(span.attribute("data-bip-original-content").value).to eq("explicit")
+        end
+
+        it "should raise an error if the given helper can't be found" do
+          expect { helper.best_in_place @user, :money, :edit_with => :fk_number_to_currency }.to raise_error(ArgumentError)
+        end
+      end
+
       describe "array-like objects" do
         it "should work with array-like objects in order to provide support to namespaces" do
           nk = Nokogiri::HTML.parse(helper.best_in_place [:admin, @user], :name)

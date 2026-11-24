@@ -1,3 +1,5 @@
+This repository has been archived as we have moved the functionality into our project.
+
 # Best In Place
 **The Unobtrusive in Place editing solution**
 
